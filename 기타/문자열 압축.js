@@ -14,7 +14,7 @@ function solution(s) {
                 if (compressed) {
                     const countLen = (compressed + 1).toString().length;
 
-                    len += countLen - ( n * compressed );
+                    len += countLen - (n * compressed);
                     compressed = 0;
                 }
 
