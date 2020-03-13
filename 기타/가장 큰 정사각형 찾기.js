@@ -1,30 +1,39 @@
+// function solution(table) {
+//     let max = Math.min(table.length, table[0].length);
+    
+//     while (max > 0) {
+//         const range = { x: table[0].length - max, y: table.length - max }
+
+//         for (let y = 0; y <= range.y; y++) {
+//             const rows = table.slice(y, y + max);
+            
+//             for (let x = 0; x <= range.x; x++) {
+//                 if (rows.every(row => !row.slice(x, x + max).includes(0))) return max * max;
+//             }
+//         }
+        
+//         max--;
+//     }
+    
+//     return 0;
+// } 효율성 0
+
 function solution(table) {
+    if (Math.min(table.length, table[0].length) < 2) return table.find(row => row.includes(1)) ? 1 : 0;
+    
     let max = 0;
     
-    for (let i = 0; i < table.length; i++) {
-        const row = table[i];
-        let width = 0;
+    for (let y = 1; y < table.length; y++) {
+        const row = table[y];
 
-        for (let j = 0; j < row.length; j++) {
-            const cell = row[j];
-            
-            if (cell && ++width > max) {
-                const height = i + width;
-                let is = true;
+        for (let x = 1; x < row.length; x++) {
+            if (row[x]) {
+                row[x] = Math.min(row[x - 1], table[y - 1][x], table[y - 1][x - 1]) + 1;
 
-                for (let k = i + 1; k < height; k++) {
-                    if (i === height - 1) for (let n = j - (width + 1); n <= j; n++) if (!table[k][n]) { is = false; break; }
-                    else if (!table[k][j]) is = false;
-
-                    if (!is) break;
-                }
-                
-                if (is) max = width;
-            } else width = 0;
+                if (row[x] > max) max = row[x];
+            }
         }
-        
-        if (table.length - max <= i) break;
     }
-
+    
     return max * max;
 }
